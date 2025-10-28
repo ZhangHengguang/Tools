@@ -1,0 +1,1 @@
+Qt version:6.9.2
