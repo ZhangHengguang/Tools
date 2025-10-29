@@ -1,13 +1,14 @@
 #include "tools.h"
 #include <QGroupBox>
 #include <QFile>
+#include <QDebug>
 
 Tools::Tools(QWidget *parent)
     : QWidget(parent)
 {
     init();
-
     initUi();
+    createConnect();
 }
 
 Tools::~Tools() {}
@@ -111,4 +112,23 @@ void Tools::loadCsvToList()
         tmp.refOut = strList.at(5) == "TRUE" ? true : false;
         m_calcPara.push_back(tmp);
     }
+}
+
+void Tools::createConnect()
+{
+    connect(listWidgetType, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
+        int row = listWidgetType->row(item);
+        m_calcType = static_cast<CalcType>(row);
+        qDebug() << row;
+    });
+    connect(calcButton, &QPushButton::clicked, this, &Tools::calcRes);
+    connect(clearButton, &QPushButton::clicked, this, [=](){
+        textEditIn->clear();
+        textEditOut->clear();
+    });
+}
+
+void Tools::calcRes()
+{
+
 }

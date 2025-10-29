@@ -27,10 +27,13 @@ public:
 
     void loadCsvToList();
 
+    void createConnect();
+
 private:
     // 数据
     std::vector<uint8_t> m_inputData;
     std::vector<CalcPara> m_calcPara;
+    CalcType m_calcType;
 
     // 输入
     QTextEdit *textEditIn;
@@ -54,5 +57,7 @@ private:
 
     // 输出
     QTextEdit *textEditOut;
+
+    void calcRes();
 };
 #endif // TOOLS_H
