@@ -11,6 +11,7 @@
 #include <QListWidget>
 #include <QComboBox>
 #include <QCheckBox>
+#include "global.h"
 
 class Tools : public QWidget
 {
@@ -20,11 +21,16 @@ public:
     Tools(QWidget *parent = nullptr);
     ~Tools();
 
+    void init();
+
     void initUi();
+
+    void loadCsvToList();
 
 private:
     // 数据
     std::vector<uint8_t> m_inputData;
+    std::vector<CalcPara> m_calcPara;
 
     // 输入
     QTextEdit *textEditIn;

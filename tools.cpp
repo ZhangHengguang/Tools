@@ -1,13 +1,21 @@
 #include "tools.h"
 #include <QGroupBox>
+#include <QFile>
 
 Tools::Tools(QWidget *parent)
     : QWidget(parent)
 {
+    init();
+
     initUi();
 }
 
 Tools::~Tools() {}
+
+void Tools::init()
+{
+    loadCsvToList();
+}
 
 void Tools::initUi()
 {
@@ -61,6 +69,12 @@ void Tools::initUi()
     layoutCalc->addLayout(layoutCalcType);
     groupBoxCalc->setLayout(layoutCalc);
 
+    for (size_t i = 0; i < m_calcPara.size(); ++i) {
+        QListWidgetItem *listWidgetItem = new QListWidgetItem();
+        listWidgetItem->setText(QString::fromStdString(m_calcPara[i].name));
+        listWidgetType->addItem(listWidgetItem);
+    }
+
     //输出
     textEditOut = new QTextEdit;
     auto groupBoxOutput = new QGroupBox(tr("输出"));
@@ -74,4 +88,27 @@ void Tools::initUi()
     mainLayout->addWidget(groupBoxOutput);
 
     this->setLayout(mainLayout);
+}
+
+void Tools::loadCsvToList()
+{
+    QString filePath = ":/data/CheckSumPara.csv";
+    QFile calcData;
+    calcData.setFileName(filePath);
+    calcData.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&calcData);
+    in.setEncoding(QStringConverter::Utf8);
+    while(!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+        QStringList strList = line.split(",");
+        CalcPara tmp;
+        bool isOK;
+        tmp.name = strList.at(0).toStdString();
+        tmp.poly = strList.at(1).toInt(&isOK, 16);
+        tmp.init = strList.at(2).toInt(&isOK, 16);
+        tmp.xOrOut = strList.at(3).toInt(&isOK, 16);
+        tmp.refIn = strList.at(4) == "TRUE" ? true : false;
+        tmp.refOut = strList.at(5) == "TRUE" ? true : false;
+        m_calcPara.push_back(tmp);
+    }
 }

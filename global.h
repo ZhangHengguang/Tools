@@ -1,0 +1,90 @@
+#ifndef GLOBAL_H
+#define GLOBAL_H
+
+#include <string>
+
+enum CalcType {
+    CUSTOM = 0,
+    SUM,
+    XOR,
+    DEC_TO_HEX,
+    HEX_TO_DEC,
+    FLOAT_TO_HEX,
+    HEX_TO_FLOAT,
+    DOUBLE_TO_HEX,
+    HEX_TO_DOUBLE,
+    CRC8_AUTOSAR,// 汽车电子系统
+    CRC8_BLUETOOTH,
+    CRC8_CDMA2000,
+    CRC8_DARC,
+    CRC8_DVB_S2,
+    CRC8_GSM_A,
+    CRC8_GSM_B,
+    CRC8_HITAG,
+    CRC8_I432_1,
+    CRC8_I_CODE,
+    CRC8_LTE,
+    CRC8_MAXIM_DOW,
+    CRC8_MIFARE_MAD,
+    CRC8_NRSC_5,
+    CRC8_OPENSAFETY,
+    CRC8_ROHC,
+    CRC8_SAE_J1850,
+    CRC8_SMBUS,
+    CRC8_TECH3250,
+    CRC8_WCDMA,
+    CRC16_ARC,
+    CRC16_CDMA2000,
+    CRC16_CMS,
+    CRC16_DDS110,
+    CRC16_DECT_R,
+    CRC16_DECT_X,
+    CRC16_DNP,
+    CRC16_EN13757,
+    CRC16_GENIBUS,
+    CRC16_GSM,
+    CRC16_IBM_3740,
+    CRC16_IBM_SDLC,
+    CRC16_ISO_IEC_14443_3_A,
+    CRC16_KERMIT,
+    CRC16_LJ1200,
+    CRC16_M17,
+    CRC16_MAXIM_DOW,
+    CRC16_MCRF4XX,
+    CRC16_MODBUS,
+    CRC16_NRSC_5,
+    CRC16_OPENSAFETY_A,
+    CRC16_OPENSAFETY_B,
+    CRC16_PROFIBUS,
+    CRC16_RIELLO,
+    CRC16_SPI_FUJITSU,
+    CRC16_T10_DIF,
+    CRC16_TELEDISK,
+    CRC16_TMS37157,
+    CRC16_UMTS,
+    CRC16_USB,
+    CRC16_XMODEM,
+    CRC32_AIXM,
+    CRC32_AUTOSAR,
+    CRC32_BASE91_D,
+    CRC32_BZIP2,
+    CRC32_CD_ROM_EDC,
+    CRC32_CKSUM,
+    CRC32_ISCSI,
+    CRC32_ISO_HDLC,
+    CRC32_JAMCRC,
+    CRC32_MEF,
+    CRC32_MPEG_2,
+    CRC32_XFER
+};
+
+struct CalcPara {
+    std::string name;
+    unsigned int poly;
+    unsigned int init;
+    unsigned int xOrOut;
+    bool refIn;
+    bool refOut;
+};
+
+#endif // GLOBAL_H

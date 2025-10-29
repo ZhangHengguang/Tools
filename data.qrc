@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/data">
+        <file>CheckSumPara.csv</file>
+    </qresource>
+</RCC>
