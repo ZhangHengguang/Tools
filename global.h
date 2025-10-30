@@ -85,6 +85,7 @@ struct CalcPara {
     unsigned int xOrOut;
     bool refIn;
     bool refOut;
+    unsigned int width;
 };
 
 #endif // GLOBAL_H

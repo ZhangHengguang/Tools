@@ -29,6 +29,12 @@ public:
 
     void createConnect();
 
+private slots:
+    //设置转换参数槽函数
+    void setCalcType(QListWidgetItem *item);
+    // 模糊查询槽函数
+    void fuzzyQuery(const QString &searchText);
+
 private:
     // 数据
     std::vector<uint8_t> m_inputData;

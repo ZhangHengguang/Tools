@@ -36,7 +36,7 @@ void Tools::initUi()
     listWidgetType = new QListWidget;
     calcButton = new QPushButton(tr("计算"));
     clearButton = new QPushButton(tr("清空"));
-    labelWidth = new QLabel(tr("计算方式(支持模糊查询)"));
+    labelWidth = new QLabel(tr("宽度"));
     comboBoxWidth = new QComboBox;
     comboBoxWidth->addItem("8");
     comboBoxWidth->addItem("16");
@@ -105,30 +105,67 @@ void Tools::loadCsvToList()
         CalcPara tmp;
         bool isOK;
         tmp.name = strList.at(0).toStdString();
-        tmp.poly = strList.at(1).toInt(&isOK, 16);
-        tmp.init = strList.at(2).toInt(&isOK, 16);
-        tmp.xOrOut = strList.at(3).toInt(&isOK, 16);
+        tmp.poly = strList.at(1).toUInt(&isOK, 16);
+        tmp.init = strList.at(2).toUInt(&isOK, 16);
+        tmp.xOrOut = strList.at(3).toUInt(&isOK, 16);
         tmp.refIn = strList.at(4) == "TRUE" ? true : false;
         tmp.refOut = strList.at(5) == "TRUE" ? true : false;
+        tmp.width = strList.at(6).toUInt();
         m_calcPara.push_back(tmp);
     }
 }
 
 void Tools::createConnect()
 {
-    connect(listWidgetType, &QListWidget::itemClicked, this, [this](QListWidgetItem *item){
-        int row = listWidgetType->row(item);
-        m_calcType = static_cast<CalcType>(row);
-        qDebug() << row;
-    });
+    void (Tools:: *setType)(QListWidgetItem *item) = &Tools::setCalcType;
+    connect(listWidgetType, &QListWidget::itemClicked, this, setType);
     connect(calcButton, &QPushButton::clicked, this, &Tools::calcRes);
     connect(clearButton, &QPushButton::clicked, this, [=](){
         textEditIn->clear();
         textEditOut->clear();
     });
+    // 模糊匹配槽函数
+    void(Tools:: *fuzzy)(const QString &) = &Tools::fuzzyQuery;
+    connect(lineEditQuery, &QLineEdit::textChanged, this, fuzzy);
+}
+
+void Tools::setCalcType(QListWidgetItem *item)
+{
+    int row = listWidgetType->row(item);
+    m_calcType = static_cast<CalcType>(row);
+    bool bEnabled = m_calcType <= DOUBLE_TO_HEX ? true : false;
+    comboBoxWidth->setEnabled(bEnabled);
+    lineEditPoly->setEnabled(bEnabled);
+    lineEditInit->setEnabled(bEnabled);
+    lineEditXOROut->setEnabled(bEnabled);
+    checkBoxRefIn->setEnabled(bEnabled);
+    checkBoxRefOut->setEnabled(bEnabled);
+    comboBoxWidth->setCurrentText(QString::number(m_calcPara[row].width));
+    lineEditPoly->setText(QString("0x%1").arg(m_calcPara[row].poly, m_calcPara[row].width /4, 16, QLatin1Char('0')).toUpper());
+    lineEditInit->setText(QString("0x%1").arg(m_calcPara[row].init, m_calcPara[row].width /4, 16, QLatin1Char('0')).toUpper());
+    lineEditXOROut->setText(QString("0x%1").arg(m_calcPara[row].xOrOut, m_calcPara[row].width /4, 16, QLatin1Char('0')).toUpper());
+    checkBoxRefIn->setChecked(m_calcPara[row].refIn);
+    checkBoxRefOut->setChecked(m_calcPara[row].refOut);
+}
+
+void Tools::fuzzyQuery(const QString &searchText)
+{
+    for (int i = 0; i < listWidgetType->count(); ++i) {
+        QListWidgetItem *item = listWidgetType->item(i);
+        QString itemText = item->text();
+        bool match = itemText.contains(searchText, Qt::CaseInsensitive);
+        item->setHidden(!match);
+    }
 }
 
 void Tools::calcRes()
 {
 
+    switch (m_calcType) {
+    case CUSTOM:
+        //TODO:CUSTOM对应函数
+        break;
+    default:
+        break;
+    }
 }
