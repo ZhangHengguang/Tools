@@ -1,5 +1,7 @@
 #include "global.h"
 #include <cstdint>
+#include <iostream>
+#include <sstream>
 
 size_t outOfRange(size_t width)
 {
@@ -117,3 +119,70 @@ unsigned int crcCheck(crcType<T> optionType, std::vector<unsigned char> arr, siz
 template unsigned int crcCheck<uint8_t>(crcType<uint8_t>, std::vector<unsigned char>, size_t);
 template unsigned int crcCheck<uint16_t>(crcType<uint16_t>, std::vector<unsigned char>, size_t);
 template unsigned int crcCheck<uint32_t>(crcType<uint32_t>, std::vector<unsigned char>, size_t);
+
+unsigned int calcChkSum(std::vector<unsigned char> arr)
+{
+    int sum = 0;
+    for (size_t i = 0; i < arr.size(); i++) {
+        sum += static_cast<unsigned int>(arr[i]);
+    }
+    return sum & 0xFF;
+}
+
+unsigned int calcXorSum(std::vector<unsigned char> arr)
+{
+    int sum = 0;
+    for (size_t i = 0; i < arr.size(); i++) {
+        sum ^= static_cast<unsigned int>(arr[i]);
+    }
+    return sum & 0xFF;
+}
+
+std::string floatToHex(float value) {
+    union {
+        float f;
+        unsigned int i;
+    } u;
+    u.f = value;
+
+    std::string hex = "";
+    char buffer[9];
+    snprintf(buffer, sizeof(buffer), "%08X", u.i);
+    hex = buffer;
+    return hex;
+}
+
+float hexToFloat(const std::string& hex) {
+    if(hex.length() != 8) {
+        std::cerr << "Invalid hex length" << std::endl;
+        return 0.0f;
+    }
+
+    union {
+        float f;
+        unsigned int i;
+    } u;
+    u.i = std::stoul(hex, nullptr, 16);
+    return u.f;
+}
+
+std::string doubleToHex(double value) {
+    union {
+        double d;
+        unsigned long long ull;
+    } u;
+    u.d = value;
+
+    std::stringstream ss;
+    ss << std::hex << std::uppercase << u.ull;
+    return ss.str();
+}
+
+double hexToDouble(const std::string& hex) {
+    union {
+        double d;
+        unsigned long long ull;
+    } u;
+    u.ull = std::stoull(hex, nullptr, 16);
+    return u.d;
+}

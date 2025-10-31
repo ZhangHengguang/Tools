@@ -217,6 +217,7 @@ void Tools::calcRes()
 {
     QString inputStr = textEditIn->toPlainText();
     QString res = "";
+    bool isOK;
     m_inputData.clear();
     if(m_calcType != DEC_TO_HEX && m_calcType != FLOAT_TO_HEX && m_calcType != DOUBLE_TO_HEX) {
         if (inputStr.length() % 2 != 0) {
@@ -224,27 +225,34 @@ void Tools::calcRes()
             return;
         }
         for (int i = 0; i < inputStr.size(); i += 2) {
-            bool isOK;
             m_inputData.push_back(inputStr.sliced(i, 2).toInt(&isOK, 16));
         }
     }
 
     switch (m_calcType) {
     case SUM:
+        res = QString("%1").arg(calcChkSum(m_inputData), 2, 16, QLatin1Char('0')).toUpper();
         break;
     case XOR:
+        res = QString("%1").arg(calcXorSum(m_inputData), 2, 16, QLatin1Char('0')).toUpper();
         break;
     case HEX_TO_DEC:
+        res = QString::number(inputStr.toInt(&isOK, 16));
         break;
     case HEX_TO_FLOAT:
+        res = QString::number(hexToFloat(inputStr.toStdString()));
         break;
     case HEX_TO_DOUBLE:
+        res = QString::number(hexToDouble(inputStr.toStdString()));
         break;
     case DEC_TO_HEX:
+        res = QString::number(inputStr.toInt(), 16);
         break;
     case FLOAT_TO_HEX:
+        res = QString::fromStdString(floatToHex(inputStr.toFloat()));
         break;
     case DOUBLE_TO_HEX:
+        res = QString::fromStdString(doubleToHex(inputStr.toDouble()));
         break;
     default:
         if(m_calcType < CRC16_ARC) {
@@ -261,7 +269,6 @@ void Tools::calcRes()
         }
         break;
     }
-
 
     textEditOut->setText(res);
 }

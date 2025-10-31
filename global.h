@@ -101,4 +101,16 @@ T funCrc(T crc, size_t bitSize, size_t moveBit, crcType<T> optionType, std::vect
 template <class T>
 unsigned int crcCheck(crcType<T> optionType, std::vector<unsigned char> arr, size_t len);
 
+unsigned int calcChkSum(std::vector<unsigned char> arr);
+
+unsigned int calcXorSum(std::vector<unsigned char> arr);
+
+std::string floatToHex(float value);
+
+float hexToFloat(const std::string& hex);
+
+std::string doubleToHex(double value);
+
+double hexToDouble(const std::string& hex);
+
 #endif // GLOBAL_H
