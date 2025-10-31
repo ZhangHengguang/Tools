@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include <string>
+#include <vector>
 
 enum CalcType {
     CUSTOM = 0,
@@ -78,14 +79,26 @@ enum CalcType {
     CRC32_XFER
 };
 
-struct CalcPara {
+template <class T>
+struct crcType {
     std::string name;
-    unsigned int poly;
-    unsigned int init;
-    unsigned int xOrOut;
+    size_t width;
+    size_t poly;
+    T init;
     bool refIn;
     bool refOut;
-    unsigned int width;
+    T xOrOut;
 };
+
+size_t outOfRange(size_t width);
+
+template<class T>
+T reverseRet(T resByte, size_t bitSize);
+
+template<class T>
+T funCrc(T crc, size_t bitSize, size_t moveBit, crcType<T> optionType, std::vector<unsigned char> arr, size_t len);
+
+template <class T>
+unsigned int crcCheck(crcType<T> optionType, std::vector<unsigned char> arr, size_t len);
 
 #endif // GLOBAL_H

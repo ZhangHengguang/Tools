@@ -9,7 +9,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
-#include <QComboBox>
 #include <QCheckBox>
 #include "global.h"
 
@@ -37,8 +36,10 @@ private slots:
 
 private:
     // 数据
-    std::vector<uint8_t> m_inputData;
-    std::vector<CalcPara> m_calcPara;
+    std::vector<unsigned char> m_inputData;
+    std::vector<crcType<uint8_t>> m_calcPara8;
+    std::vector<crcType<uint16_t>> m_calcPara16;
+    std::vector<crcType<uint32_t>> m_calcPara32;
     CalcType m_calcType;
 
     // 输入
@@ -51,7 +52,7 @@ private:
     QPushButton *calcButton;
     QPushButton *clearButton;
     QLabel *labelWidth;
-    QComboBox *comboBoxWidth;
+    QLineEdit *lineEditWidth;
     QLabel *labelPoly;
     QLineEdit *lineEditPoly;
     QLabel *labelInit;
@@ -65,5 +66,8 @@ private:
     QTextEdit *textEditOut;
 
     void calcRes();
+
+    template <class T>
+    unsigned int calcChkRes(crcType<T>& option);
 };
 #endif // TOOLS_H
