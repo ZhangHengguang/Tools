@@ -7,6 +7,7 @@
 enum CalcType {
     CUSTOM = 0,
     SUM,
+    SUM_NEG,
     XOR,
     HEX_TO_DEC,
     HEX_TO_FLOAT,
@@ -101,7 +102,7 @@ T funCrc(T crc, size_t bitSize, size_t moveBit, crcType<T> optionType, std::vect
 template <class T>
 unsigned int crcCheck(crcType<T> optionType, std::vector<unsigned char> arr, size_t len);
 
-unsigned int calcChkSum(std::vector<unsigned char> arr);
+unsigned int calcChkSum(std::vector<unsigned char> arr, bool neg);
 
 unsigned int calcXorSum(std::vector<unsigned char> arr);
 

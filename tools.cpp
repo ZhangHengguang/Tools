@@ -231,7 +231,10 @@ void Tools::calcRes()
 
     switch (m_calcType) {
     case SUM:
-        res = QString("%1").arg(calcChkSum(m_inputData), 2, 16, QLatin1Char('0')).toUpper();
+        res = QString("%1").arg(calcChkSum(m_inputData, false), 2, 16, QLatin1Char('0')).toUpper();
+        break;
+    case SUM_NEG:
+        res = QString("%1").arg(calcChkSum(m_inputData, true), 2, 16, QLatin1Char('0')).toUpper();
         break;
     case XOR:
         res = QString("%1").arg(calcXorSum(m_inputData), 2, 16, QLatin1Char('0')).toUpper();

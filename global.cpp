@@ -120,13 +120,13 @@ template unsigned int crcCheck<uint8_t>(crcType<uint8_t>, std::vector<unsigned c
 template unsigned int crcCheck<uint16_t>(crcType<uint16_t>, std::vector<unsigned char>, size_t);
 template unsigned int crcCheck<uint32_t>(crcType<uint32_t>, std::vector<unsigned char>, size_t);
 
-unsigned int calcChkSum(std::vector<unsigned char> arr)
+unsigned int calcChkSum(std::vector<unsigned char> arr, bool neg)
 {
-    int sum = 0;
+    unsigned int sum = 0;
     for (size_t i = 0; i < arr.size(); i++) {
         sum += static_cast<unsigned int>(arr[i]);
     }
-    return sum & 0xFF;
+    return neg ? static_cast<unsigned int>(~sum & 0xFF) : (sum & 0xFF);
 }
 
 unsigned int calcXorSum(std::vector<unsigned char> arr)
